@@ -1,0 +1,28 @@
+{
+  "HttpPort": "7000",
+  "Environment": "local",
+  "Jwt": {
+    "ContextKey": "user"
+  },
+  "Database": {
+    "Driver": "mysql",
+    "User": "root",
+    "Connection": "@tcp(127.0.0.1:3306)/work?charset=utf8mb4&collation=utf8mb4_unicode_ci&parseTime=True",
+    "ShowSql" : true
+  },
+  "Domain": {
+    "WebApp": {
+      "LoginUrl": "http://localhost:3000/login",
+      "HomeUrl": "http://localhost:3000"
+    }
+  },
+  "Log": {
+    "ShowSql": true,
+    "ShowHttpLog": true,
+    "Path": "/var/log/go/api.log",
+    "MaxSize": 500,
+    "MaxBackups": 3,
+    "MaxAge": 32,
+    "Compress": true
+  }
+}
