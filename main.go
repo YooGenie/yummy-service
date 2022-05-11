@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/YooGenie/daily-work-log-service/config"
+	"github.com/YooGenie/daily-work-log-service/middleware"
+	_ "github.com/go-sql-driver/mysql"
 	"os"
 )
 
@@ -16,5 +18,10 @@ func main() {
 		}
 	}()
 
-	fmt.Println("환경변수 설정 끝")
+	xorm := middleware.ConfigureDatabase()
+	xorm.Close()
+	fmt.Println(xorm)
+	//e := echo.New()
+
+	fmt.Println("DB 설정 끝")
 }
