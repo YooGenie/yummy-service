@@ -7,7 +7,7 @@
   "Database": {
     "Driver": "mysql",
     "User": "root",
-    "Connection": "@tcp(127.0.0.1:3306)/work?charset=utf8mb4&collation=utf8mb4_unicode_ci&parseTime=True",
+    "Connection": "@tcp(127.0.0.1:3306)/study?charset=utf8mb4&collation=utf8mb4_unicode_ci&parseTime=True",
     "ShowSql" : true
   },
   "Domain": {
