@@ -5,6 +5,7 @@ import (
 	"github.com/YooGenie/daily-work-log-service/config"
 	"github.com/YooGenie/daily-work-log-service/middleware"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/labstack/gommon/log"
 	"os"
 )
 
@@ -20,8 +21,11 @@ func main() {
 
 	xorm := middleware.ConfigureDatabase()
 	xorm.Close()
-	fmt.Println(xorm)
-	//e := echo.New()
 
-	fmt.Println("DB 설정 끝")
+	e := middleware.ConfigureEcho()
+
+
+
+	log.Info("업무일지 Service Server Started: Port=" + config.Config.HttpPort)
+	e.Start(":" + config.Config.HttpPort)
 }
