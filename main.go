@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/YooGenie/daily-work-log-service/config"
+	"github.com/YooGenie/daily-work-log-service/controller"
 	"github.com/YooGenie/daily-work-log-service/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/labstack/gommon/log"
@@ -24,7 +25,7 @@ func main() {
 
 	e := middleware.ConfigureEcho()
 
-
+	controller.MemberController{}.Init(e.Group("/api/members"))
 
 	log.Info("업무일지 Service Server Started: Port=" + config.Config.HttpPort)
 	e.Start(":" + config.Config.HttpPort)
