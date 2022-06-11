@@ -1,12 +1,13 @@
 package middleware
 
 import (
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func ConfigureEcho() *echo.Echo {
 	e := echo.New()
+	xorm := ConfigureDatabase()
 	//e.Validator = RegisterValidator()
 	e.HideBanner = true
 
@@ -19,7 +20,7 @@ func ConfigureEcho() *echo.Echo {
 	//e.Use(middleware.JWTWithConfig(JWT()))
 	//e.Use(setSession())
 	//e.Use(setLogger())
-	//e.Use(setXormSession(xorm))
+	e.Use(setXormSession(xorm))
 
 
 	return e
