@@ -3,7 +3,7 @@ package controller
 import (
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
 	"github.com/YooGenie/daily-work-log-service/member/service"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func (MemberController) Create(ctx echo.Context) error {
 	}
 	// validate 하기
 
-	err := service.MemberService().Create(ctx.Request().Context(), member)
+	err := service.MemberService().Create(ctx, member)
 	if err != nil {
 		return err
 	}

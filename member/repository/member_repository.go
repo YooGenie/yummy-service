@@ -1,11 +1,12 @@
 package repository
 
 import (
-	"context"
-	"fmt"
+	common "github.com/YooGenie/daily-work-log-service/common"
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
 	"github.com/YooGenie/daily-work-log-service/member/entity"
+	echo "github.com/labstack/echo/v4"
 	"sync"
+	"time"
 )
 
 var (
@@ -23,18 +24,21 @@ func MemberRepository() *memberRepository {
 type memberRepository struct {
 }
 
-func (memberRepository) Create(ctx context.Context, creation requestDto.MemberCreate) error {
+func (memberRepository) Create(ctx echo.Context, creation requestDto.MemberCreate) error {
 
 	member := entity.Member{
 		Email:    creation.Email,
 		Password: creation.Password,
 		Name:     creation.Name,
 		Mobile:   creation.Mobile,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
-	fmt.Println(member)
+	if _, err := common.GetDB(ctx).Insert(&member); err != nil {
+		return err
+	}
 
-	//echo에서 context 만들기
 
 	return nil
 }
