@@ -5,6 +5,7 @@ import (
 	"github.com/YooGenie/daily-work-log-service/member/service"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strconv"
 )
 
 type MemberController struct {
@@ -12,6 +13,7 @@ type MemberController struct {
 
 func (controller MemberController) Init(g *echo.Group) {
 	g.POST("", controller.Create)
+	g.GET("/:id", controller.GetMember)
 
 }
 
@@ -29,4 +31,19 @@ func (MemberController) Create(ctx echo.Context) error {
 	}
 
 	return ctx.NoContent(http.StatusCreated)
+}
+
+func (MemberController) GetMember(ctx echo.Context) error {
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+
+	member, err := service.MemberService().GetMember(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, member)
+
 }

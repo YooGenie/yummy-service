@@ -2,6 +2,7 @@ package service
 
 import (
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
+	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/member/repository"
 	"github.com/labstack/echo/v4"
 	"sync"
@@ -29,4 +30,13 @@ func (memberService) Create(ctx echo.Context, creation requestDto.MemberCreate) 
 	}
 	return
 
+}
+
+func (memberService) GetMember(ctx echo.Context, id int64) (memberSummary responseDto.MemberSummary, err error) {
+	memberSummary, err = repository.MemberRepository().GetMember(ctx, id)
+	if err != nil {
+		return
+	}
+
+	return
 }
