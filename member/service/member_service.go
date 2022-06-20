@@ -40,3 +40,12 @@ func (memberService) GetMember(ctx echo.Context, id int64) (memberSummary respon
 
 	return
 }
+
+func (memberService) GetMemberByEmail(ctx echo.Context, email string) (memberSummary responseDto.MemberSummary, err error) {
+	memberSummary, err = repository.MemberRepository().GetMemberByEmail(ctx, email)
+	if err != nil {
+		return
+	}
+
+	return
+}

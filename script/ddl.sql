@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `members`
     `password`   varchar(100) NOT NULL,
     `name`       VARCHAR(50)  NOT NULL,
     `mobile`     VARCHAR(100) NOT NULL,
+    `role`       VARCHAR(30)  NOT NULL,
     `created_at` DATETIME     NOT NULL,
     `updated_at` DATETIME     NOT NULL,
     `del`        DATETIME     NULL COMMENT '탈퇴날짜',

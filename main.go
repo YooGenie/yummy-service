@@ -26,6 +26,7 @@ func main() {
 	e := middleware.ConfigureEcho()
 
 	controller.MemberController{}.Init(e.Group("/api/members"))
+	controller.AuthController{}.Init(e.Group("/api/auth"))
 
 	log.Info("업무일지 Service Server Started: Port=" + config.Config.HttpPort)
 	e.Start(":" + config.Config.HttpPort)
