@@ -2,6 +2,7 @@ package repository
 
 import (
 	common "github.com/YooGenie/daily-work-log-service/common"
+	"github.com/YooGenie/daily-work-log-service/common/errors"
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
 	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/member/entity"
@@ -63,6 +64,7 @@ func (memberRepository) GetMember(ctx echo.Context, id int64) (memberSummary res
 	}
 
 	if has == false {
+		err = errors.NoResultError(errors.MessageNoDataFound)
 		return
 	}
 
@@ -85,6 +87,7 @@ func (memberRepository) GetMemberByEmail(ctx echo.Context, email string) (member
 	}
 
 	if has == false {
+		err = errors.NoResultError(errors.MessageNoDataFound)
 		return
 	}
 
