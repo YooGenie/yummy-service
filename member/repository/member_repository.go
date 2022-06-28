@@ -33,7 +33,7 @@ func (memberRepository) Create(ctx echo.Context, creation requestDto.MemberCreat
 
 	member := entity.Member{
 		Email:     creation.Email,
-		Password:  creation.Password,
+		Password:  common.SetEncrypt(creation.Password),
 		Name:      creation.Name,
 		Mobile:    creation.Mobile,
 		Role:      MEMBER,
