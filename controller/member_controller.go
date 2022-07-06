@@ -22,8 +22,11 @@ func (MemberController) Create(ctx echo.Context) error {
 
 	if err := ctx.Bind(&member); err != nil {
 		return err
+	} else {
+		if err := member.Validate(ctx); err != nil {
+			return err
+		}
 	}
-	// validate 하기
 
 	err := service.MemberService().Create(ctx, member)
 	if err != nil {

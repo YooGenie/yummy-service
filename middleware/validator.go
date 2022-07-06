@@ -17,5 +17,6 @@ func RegisterValidator() *CustomValidator {
 	customValidator := validator.New()
 	customValidator.RegisterValidation("date8", val.ValidateDate8)
 	customValidator.RegisterValidation("date12", val.ValidateDate12)
+	customValidator.RegisterValidation("mobile",val.ValidateMobile)
 	return &CustomValidator{validator: customValidator}
 }
