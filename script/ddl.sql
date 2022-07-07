@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `works`
     INDEX `idx_works_date` (`date` ASC)
 );
 
-CREATE TABLE IF NOT EXISTS `tech`
+CREATE TABLE IF NOT EXISTS `techs`
 (
     `id`           INT          NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(30)   NOT NULL COMMENT '기술명',
