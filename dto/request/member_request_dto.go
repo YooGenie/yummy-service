@@ -10,6 +10,7 @@ type MemberCreate struct {
 	Password string `json:"password" validate:"gte=6,lte=50,required"`
 	Name     string `json:"name" validate:"lte=50,required"`
 	Mobile   string `json:"mobile" validate:"mobile,required"`
+	Role     string `json:"role" validate:"required"`
 }
 
 func (v MemberCreate) Validate(ctx echo.Context) error {
@@ -21,7 +22,6 @@ func (v MemberCreate) Validate(ctx echo.Context) error {
 
 	return nil
 }
-
 
 type SearchMemberQueryParams struct {
 }

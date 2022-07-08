@@ -27,16 +27,21 @@ func TechRepository() *techRepository {
 type techRepository struct {
 }
 
-func (techRepository) Create(ctx echo.Context, creation requestDto.TechCreate) error {
+func (techRepository) Create(c echo.Context, creation requestDto.TechCreate) error {
 
-	tech := entity.Tech{
-		Name: creation.Name,
-		//세션에 있는 값을 넣어야함
-		//Created:
-		//Updated:
+	userJson, err := common.Struct2Json(common.GetUserClaim(c))
+	if err != nil {
+		common.Log(c).Errorln(err.Error())
+		return errors.ApiInternalServerError(err.Error())
 	}
 
-	if _, err := common.GetDB(ctx).Insert(&tech); err != nil {
+	tech := entity.Tech{
+		Name:    creation.Name,
+		Created: []byte(userJson),
+		Updated: []byte(userJson),
+	}
+
+	if _, err := common.GetDB(c).Insert(&tech); err != nil {
 		return err
 	}
 

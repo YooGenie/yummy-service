@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ContextSessionKey = "session"
+	ContextUserClaimKey = "userClaim"
 	ContextDBKey      = "db"
 	ContextLogDBKey   = "logdb"
 	ContextLogKey     = "log"

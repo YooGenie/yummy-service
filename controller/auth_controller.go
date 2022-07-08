@@ -29,20 +29,20 @@ func (AuthController) AuthWithEmailAndPassword(ctx echo.Context) (err error) {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	refreshToken, err := ctx.Cookie("refreshToken")
-	if err != nil || len(refreshToken.Value) == 0 {
-		cookie := new(http.Cookie)
-		cookie.Name = "refreshToken"
-		cookie.Value = jwtToken.RefreshToken
-		cookie.HttpOnly = true
-		cookie.Path = "/"
-		ctx.SetCookie(cookie)
-	} else {
-		refreshToken.Value = jwtToken.RefreshToken
-		refreshToken.HttpOnly = true
-		refreshToken.Path = "/"
-		ctx.SetCookie(refreshToken)
-	}
+	//refreshToken, err := ctx.Cookie("refreshToken")
+	//if err != nil || len(refreshToken.Value) == 0 {
+	//	cookie := new(http.Cookie)
+	//	cookie.Name = "refreshToken"
+	//	cookie.Value = jwtToken.RefreshToken
+	//	cookie.HttpOnly = true
+	//	cookie.Path = "/"
+	//	ctx.SetCookie(cookie)
+	//} else {
+	//	refreshToken.Value = jwtToken.RefreshToken
+	//	refreshToken.HttpOnly = true
+	//	refreshToken.Path = "/"
+	//	ctx.SetCookie(refreshToken)
+	//}
 
 	result := map[string]string{}
 	result["accessToken"] = jwtToken.AccessToken

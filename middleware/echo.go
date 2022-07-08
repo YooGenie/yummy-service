@@ -15,13 +15,11 @@ func ConfigureEcho() *echo.Echo {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
-
 	e.Use(middleware.RequestID())
-	//e.Use(middleware.JWTWithConfig(JWT()))
-	//e.Use(setSession())
+	e.Use(middleware.JWTWithConfig(JWT()))
+	e.Use(setSession())
 	//e.Use(setLogger())
 	e.Use(setXormSession(xorm))
-
 
 	return e
 }
