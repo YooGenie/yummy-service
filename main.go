@@ -20,9 +20,6 @@ func main() {
 		}
 	}()
 
-	xorm := middleware.ConfigureDatabase()
-	xorm.Close()
-
 	e := middleware.ConfigureEcho()
 
 	controller.MemberController{}.Init(e.Group("/api/members"))

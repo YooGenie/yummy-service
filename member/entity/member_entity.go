@@ -5,7 +5,7 @@ import (
 )
 
 type Member struct {
-	Id        int64     `xorm:"id pk autoincr" `
+	ID        int64     `xorm:"id pk autoincr" `
 	Email     string    `xorm:"email" `
 	Password  string    `xorm:"password" `
 	Name      string    `xorm:"name" `

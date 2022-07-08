@@ -27,7 +27,7 @@ func MemberRepository() *memberRepository {
 type memberRepository struct {
 }
 
-const MEMBER = "member"
+
 
 func (memberRepository) Create(ctx echo.Context, creation requestDto.MemberCreate) error {
 
@@ -36,7 +36,7 @@ func (memberRepository) Create(ctx echo.Context, creation requestDto.MemberCreat
 		Password:  common.SetEncrypt(creation.Password),
 		Name:      creation.Name,
 		Mobile:    creation.Mobile,
-		Role:      MEMBER,
+		Role:      creation.Role,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -49,7 +49,7 @@ func (memberRepository) Create(ctx echo.Context, creation requestDto.MemberCreat
 }
 
 func (memberRepository) GetMember(ctx echo.Context, id int64) (memberSummary responseDto.MemberSummary, err error) {
-	memberSummary.Id = id
+	memberSummary.ID = id
 
 	queryBuilder := func() xorm.Interface {
 		q := common.GetDB(ctx).Table("members")
@@ -75,9 +75,9 @@ func (memberRepository) GetMemberByEmail(ctx echo.Context, email string) (member
 	memberSummary.Email = email
 
 	queryBuilder := func() xorm.Interface {
-		q := common.GetDB(ctx).Table("members")
+		q := common.GetDB(ctx).Table("members").Select("id, email ,password, name ,role")
 		q.Where("1=1")
-		q.And("members.email =?", email)
+		//q.And("members.email =?", email)
 		return q
 	}
 

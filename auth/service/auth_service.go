@@ -23,7 +23,6 @@ func AuthService() *authService {
 type authService struct {
 }
 
-
 func (authService) AuthWithSignIdPassword(ctx echo.Context, signIn requestDto.SignIn) (token middleware.JwtToken, err error) {
 	memberEntity, err := memberService.MemberService().GetMemberByEmail(ctx, signIn.Email)
 	if err != nil {
@@ -31,10 +30,10 @@ func (authService) AuthWithSignIdPassword(ctx echo.Context, signIn requestDto.Si
 	}
 	//비밀번호 유효성
 
-	token, err = middleware.JwtAuthentication{}.GenerateJwtToken(middleware.UserClaim{
-		Id:    memberEntity.Email,
-		Name:  memberEntity.Name,
-		Roles: memberEntity.Role,
+	token, err = middleware.JwtAuthentication{}.GenerateJwtToken(middleware.JwtClaim{
+		ID:   memberEntity.ID,
+		Name: memberEntity.Name,
+		Role: memberEntity.Role,
 	})
 
 	return
