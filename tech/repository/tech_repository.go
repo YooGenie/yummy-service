@@ -2,8 +2,11 @@ package repository
 
 import (
 	common "github.com/YooGenie/daily-work-log-service/common"
+	"github.com/YooGenie/daily-work-log-service/common/errors"
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
+	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/tech/entity"
+	"github.com/go-xorm/xorm"
 	echo "github.com/labstack/echo/v4"
 	"sync"
 )
@@ -38,4 +41,28 @@ func (techRepository) Create(ctx echo.Context, creation requestDto.TechCreate) e
 	}
 
 	return nil
+}
+
+
+func (techRepository) GetTech(ctx echo.Context, id int64) (techSummary responseDto.TechSummary, err error) {
+	techSummary.Id = id
+
+	queryBuilder := func() xorm.Interface {
+		q := common.GetDB(ctx).Table("techs")
+		q.Where("1=1")
+		q.And("techs.id =?", id)
+		return q
+	}
+
+	has, err := queryBuilder().Get(&techSummary)
+	if err != nil {
+		return
+	}
+
+	if has == false {
+		err = errors.NoResultError(errors.MessageNoDataFound)
+		return
+	}
+
+	return
 }
