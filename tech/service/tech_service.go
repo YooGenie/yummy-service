@@ -5,6 +5,7 @@ import (
 	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/tech/repository"
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 	"sync"
 )
 
@@ -39,4 +40,10 @@ func (techService) GetTech(ctx echo.Context, id int64) (techSummary responseDto.
 	}
 
 	return
+}
+
+func (techService) GetTechs(ctx echo.Context, searchParams requestDto.SearchTechQueryParams) ([]responseDto.TechSummary, error) {
+	log.Traceln("")
+
+	return repository.TechRepository().FindAll(ctx, searchParams)
 }
