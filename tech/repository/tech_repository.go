@@ -8,6 +8,7 @@ import (
 	"github.com/YooGenie/daily-work-log-service/tech/entity"
 	"github.com/go-xorm/xorm"
 	echo "github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 	"sync"
 )
 
@@ -26,11 +27,10 @@ func TechRepository() *techRepository {
 type techRepository struct {
 }
 
-
 func (techRepository) Create(ctx echo.Context, creation requestDto.TechCreate) error {
 
 	tech := entity.Tech{
-		Name:      creation.Name,
+		Name: creation.Name,
 		//세션에 있는 값을 넣어야함
 		//Created:
 		//Updated:
@@ -42,7 +42,6 @@ func (techRepository) Create(ctx echo.Context, creation requestDto.TechCreate) e
 
 	return nil
 }
-
 
 func (techRepository) GetTech(ctx echo.Context, id int64) (techSummary responseDto.TechSummary, err error) {
 	techSummary.Id = id
@@ -61,6 +60,24 @@ func (techRepository) GetTech(ctx echo.Context, id int64) (techSummary responseD
 
 	if has == false {
 		err = errors.NoResultError(errors.MessageNoDataFound)
+		return
+	}
+
+	return
+}
+
+func (techRepository) FindAll(ctx echo.Context, searchParams requestDto.SearchTechQueryParams) (techSummary []responseDto.TechSummary, err error) {
+
+	log.Traceln("")
+
+	queryBuilder := func() xorm.Interface {
+		q := common.GetDB(ctx).Table("techs")
+		q.Where("1=1")
+
+		return q
+	}
+
+	if err = queryBuilder().Desc("techs.id").Find(&techSummary); err != nil {
 		return
 	}
 
