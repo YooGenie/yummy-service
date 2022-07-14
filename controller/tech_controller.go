@@ -14,6 +14,7 @@ type TechController struct {
 
 func (controller TechController) Init(g *echo.Group) {
 	g.POST("", controller.Create)
+	g.PUT("/:id", controller.Update)
 	g.GET("/:id", controller.GetTech)
 	g.GET("", controller.GetTechs)
 }
@@ -30,6 +31,33 @@ func (TechController) Create(ctx echo.Context) error {
 	}
 
 	err := service.TechService().Create(ctx, tech)
+	if err != nil {
+		return err
+	}
+
+	return ctx.NoContent(http.StatusCreated)
+}
+
+func (TechController) Update(ctx echo.Context) error {
+
+	var tech requestDto.TechCreate
+
+	techID, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+
+	if err := ctx.Bind(&tech); err != nil {
+		return err
+	} else {
+		if err := tech.Validate(ctx); err != nil {
+			return err
+		}
+	}
+
+	tech.ID = techID
+
+	err = service.TechService().Update(ctx, tech)
 	if err != nil {
 		return err
 	}

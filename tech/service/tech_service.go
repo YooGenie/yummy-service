@@ -33,6 +33,19 @@ func (techService) Create(ctx echo.Context, creation requestDto.TechCreate) (err
 
 }
 
+func (techService) Update(ctx echo.Context, edition requestDto.TechCreate) error {
+	_, err := repository.TechRepository().GetTech(ctx, edition.ID)
+	if err != nil {
+		return err
+	}
+
+	if err = repository.TechRepository().Update(ctx, edition); err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (techService) GetTech(ctx echo.Context, id int64) (techSummary responseDto.TechSummary, err error) {
 	techSummary, err = repository.TechRepository().GetTech(ctx, id)
 	if err != nil {

@@ -48,6 +48,27 @@ func (techRepository) Create(c echo.Context, creation requestDto.TechCreate) err
 	return nil
 }
 
+func (techRepository) Update(c echo.Context, edition requestDto.TechCreate) error {
+
+	userJson, err := common.Struct2Json(common.GetUserClaim(c))
+	if err != nil {
+		common.Log(c).Errorln(err.Error())
+		return errors.ApiInternalServerError(err.Error())
+	}
+
+	tech := entity.Tech{
+		ID:      edition.ID,
+		Name:    edition.Name,
+		Updated: []byte(userJson),
+	}
+
+	if _, err := common.GetDB(c).Cols("id, name, updated").ID(edition.ID).Update(&tech); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (techRepository) GetTech(ctx echo.Context, id int64) (techSummary responseDto.TechSummary, err error) {
 	techSummary.Id = id
 
