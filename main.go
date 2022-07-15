@@ -25,6 +25,7 @@ func main() {
 	controller.MemberController{}.Init(e.Group("/api/members"))
 	controller.AuthController{}.Init(e.Group("/api/auth"))
 	controller.TechController{}.Init(e.Group("/api/tech"))
+	controller.WorkController{}.Init(e.Group("/api/work"))
 
 	log.Info("업무일지 Service Server Started: Port=" + config.Config.HttpPort)
 	e.Start(":" + config.Config.HttpPort)
