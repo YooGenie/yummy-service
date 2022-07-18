@@ -31,7 +31,7 @@ func (authService) AuthWithSignIdPassword(ctx echo.Context, signIn requestDto.Si
 	//비밀번호 유효성
 
 	token, err = middleware.JwtAuthentication{}.GenerateJwtToken(middleware.JwtClaim{
-		ID:   memberEntity.ID,
+		ID:   memberEntity.Id,
 		Name: memberEntity.Name,
 		Role: memberEntity.Role,
 	})

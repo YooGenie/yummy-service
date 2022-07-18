@@ -4,7 +4,9 @@ import (
 	common "github.com/YooGenie/daily-work-log-service/common"
 	"github.com/YooGenie/daily-work-log-service/common/errors"
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
+	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/work/entity"
+	"github.com/go-xorm/xorm"
 	echo "github.com/labstack/echo/v4"
 	"sync"
 )
@@ -49,4 +51,27 @@ func (workRepository) Create(c echo.Context, creation requestDto.WorkCreate) err
 	}
 
 	return nil
+}
+
+func (workRepository) GetWork(ctx echo.Context, id int64) (workSummary responseDto.WorkSummary, err error) {
+	workSummary.Id = id
+
+	queryBuilder := func() xorm.Interface {
+		q := common.GetDB(ctx).Table("works")
+		q.Where("1=1")
+		q.And("works.id =?", id)
+		return q
+	}
+
+	has, err := queryBuilder().Get(&workSummary)
+	if err != nil {
+		return
+	}
+
+	if has == false {
+		err = errors.NoResultError(errors.MessageNoDataFound)
+		return
+	}
+
+	return
 }

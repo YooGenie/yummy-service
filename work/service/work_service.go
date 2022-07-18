@@ -2,6 +2,7 @@ package service
 
 import (
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
+	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/work/repository"
 	"github.com/labstack/echo/v4"
 	"sync"
@@ -29,4 +30,14 @@ func (workService) Create(ctx echo.Context, creation requestDto.WorkCreate) (err
 	}
 	return
 
+}
+
+
+func (workService) GetWork(ctx echo.Context, id int64) (workSummary responseDto.WorkSummary, err error) {
+	workSummary, err = repository.WorkRepository().GetWork(ctx, id)
+	if err != nil {
+		return
+	}
+
+	return
 }
