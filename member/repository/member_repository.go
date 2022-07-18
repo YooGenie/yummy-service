@@ -49,7 +49,7 @@ func (memberRepository) Create(ctx echo.Context, creation requestDto.MemberCreat
 }
 
 func (memberRepository) GetMember(ctx echo.Context, id int64) (memberSummary responseDto.MemberSummary, err error) {
-	memberSummary.ID = id
+	memberSummary.Id  = id
 
 	queryBuilder := func() xorm.Interface {
 		q := common.GetDB(ctx).Table("members")

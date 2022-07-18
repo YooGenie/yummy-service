@@ -5,6 +5,7 @@ import (
 	"github.com/YooGenie/daily-work-log-service/work/service"
 	"github.com/labstack/echo/v4"
 	"net/http"
+	"strconv"
 )
 
 type WorkController struct {
@@ -12,6 +13,7 @@ type WorkController struct {
 
 func (controller WorkController) Init(g *echo.Group) {
 	g.POST("", controller.Create)
+	g.GET("/:id", controller.GetWork)
 
 }
 
@@ -32,4 +34,19 @@ func (WorkController) Create(ctx echo.Context) error {
 	}
 
 	return ctx.NoContent(http.StatusCreated)
+}
+
+func (WorkController) GetWork(ctx echo.Context) error {
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+
+	work, err := service.WorkService().GetWork(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, work)
+
 }
