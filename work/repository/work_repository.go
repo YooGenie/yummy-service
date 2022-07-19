@@ -8,6 +8,7 @@ import (
 	"github.com/YooGenie/daily-work-log-service/work/entity"
 	"github.com/go-xorm/xorm"
 	echo "github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 	"sync"
 )
 
@@ -70,6 +71,24 @@ func (workRepository) GetWork(ctx echo.Context, id int64) (workSummary responseD
 
 	if has == false {
 		err = errors.NoResultError(errors.MessageNoDataFound)
+		return
+	}
+
+	return
+}
+
+func (workRepository) FindAll(ctx echo.Context, searchParams requestDto.SearchWorkQueryParams) (workSummary []responseDto.WorkSummary, err error) {
+
+	log.Traceln("")
+
+	queryBuilder := func() xorm.Interface {
+		q := common.GetDB(ctx).Table("works")
+		q.Where("1=1")
+
+		return q
+	}
+
+	if err = queryBuilder().Desc("works.id").Find(&workSummary); err != nil {
 		return
 	}
 

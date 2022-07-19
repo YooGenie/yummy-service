@@ -4,6 +4,7 @@ import (
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
 	"github.com/YooGenie/daily-work-log-service/work/service"
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
@@ -14,7 +15,7 @@ type WorkController struct {
 func (controller WorkController) Init(g *echo.Group) {
 	g.POST("", controller.Create)
 	g.GET("/:id", controller.GetWork)
-
+	g.GET("", controller.GetWorks)
 }
 
 func (WorkController) Create(ctx echo.Context) error {
@@ -49,4 +50,21 @@ func (WorkController) GetWork(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, work)
 
+}
+
+func (WorkController) GetWorks(ctx echo.Context) error {
+	log.Traceln("")
+
+	searchParams := requestDto.SearchWorkQueryParams{}
+
+	if err := ctx.Bind(&searchParams); err != nil {
+		return err
+	}
+
+	result, err := service.WorkService().GetWorks(ctx, searchParams)
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, result)
 }
