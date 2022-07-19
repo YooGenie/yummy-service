@@ -5,6 +5,7 @@ import (
 	responseDto "github.com/YooGenie/daily-work-log-service/dto/response"
 	"github.com/YooGenie/daily-work-log-service/work/repository"
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 	"sync"
 )
 
@@ -32,7 +33,6 @@ func (workService) Create(ctx echo.Context, creation requestDto.WorkCreate) (err
 
 }
 
-
 func (workService) GetWork(ctx echo.Context, id int64) (workSummary responseDto.WorkSummary, err error) {
 	workSummary, err = repository.WorkRepository().GetWork(ctx, id)
 	if err != nil {
@@ -40,4 +40,10 @@ func (workService) GetWork(ctx echo.Context, id int64) (workSummary responseDto.
 	}
 
 	return
+}
+
+func (workService) GetWorks(ctx echo.Context, searchParams requestDto.SearchWorkQueryParams) ([]responseDto.WorkSummary, error) {
+	log.Traceln("")
+
+	return repository.WorkRepository().FindAll(ctx, searchParams)
 }
