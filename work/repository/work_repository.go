@@ -54,6 +54,32 @@ func (workRepository) Create(c echo.Context, creation requestDto.WorkCreate) err
 	return nil
 }
 
+func (workRepository) Update(c echo.Context, edition requestDto.WorkCreate) error {
+
+	userJson, err := common.Struct2Json(common.GetUserClaim(c))
+	if err != nil {
+		common.Log(c).Errorln(err.Error())
+		return errors.ApiInternalServerError(err.Error())
+	}
+
+	work := entity.Work{
+		Date:        edition.Date,
+		ProjectName: edition.ProjectName,
+		TechID:      edition.TechID,
+		TechName:    edition.TechName,
+		LinkURL:     edition.LinkURL,
+		Content:     edition.Content,
+		Retrospect:  edition.Retrospect,
+		Updated:     []byte(userJson),
+	}
+
+	if _, err := common.GetDB(c).Cols("id, date,project_name, tech_id, tech_name, link_url,content,  retrospect, updated").ID(edition.ID).Update(&work); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (workRepository) GetWork(ctx echo.Context, id int64) (workSummary responseDto.WorkSummary, err error) {
 	workSummary.Id = id
 
