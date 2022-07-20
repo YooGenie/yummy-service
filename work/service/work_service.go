@@ -33,6 +33,19 @@ func (workService) Create(ctx echo.Context, creation requestDto.WorkCreate) (err
 
 }
 
+func (workService) Update(ctx echo.Context, edition requestDto.WorkCreate) error {
+	_, err := repository.WorkRepository().GetWork(ctx, edition.ID)
+	if err != nil {
+		return err
+	}
+
+	if err = repository.WorkRepository().Update(ctx, edition); err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func (workService) GetWork(ctx echo.Context, id int64) (workSummary responseDto.WorkSummary, err error) {
 	workSummary, err = repository.WorkRepository().GetWork(ctx, id)
 	if err != nil {

@@ -14,6 +14,7 @@ type WorkController struct {
 
 func (controller WorkController) Init(g *echo.Group) {
 	g.POST("", controller.Create)
+	g.PUT("/:id", controller.Update)
 	g.GET("/:id", controller.GetWork)
 	g.GET("", controller.GetWorks)
 }
@@ -30,6 +31,33 @@ func (WorkController) Create(ctx echo.Context) error {
 	}
 
 	err := service.WorkService().Create(ctx, work)
+	if err != nil {
+		return err
+	}
+
+	return ctx.NoContent(http.StatusCreated)
+}
+
+func (WorkController) Update(ctx echo.Context) error {
+
+	var tech requestDto.WorkCreate
+
+	techID, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return err
+	}
+
+	if err := ctx.Bind(&tech); err != nil {
+		return err
+	} else {
+		if err := tech.Validate(ctx); err != nil {
+			return err
+		}
+	}
+
+	tech.ID = techID
+
+	err = service.WorkService().Update(ctx, tech)
 	if err != nil {
 		return err
 	}
