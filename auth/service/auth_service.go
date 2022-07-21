@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/YooGenie/daily-work-log-service/common"
+	"github.com/YooGenie/daily-work-log-service/common/errors"
 	requestDto "github.com/YooGenie/daily-work-log-service/dto/request"
 	memberService "github.com/YooGenie/daily-work-log-service/member/service"
 	"github.com/YooGenie/daily-work-log-service/middleware"
@@ -28,7 +30,11 @@ func (authService) AuthWithSignIdPassword(ctx echo.Context, signIn requestDto.Si
 	if err != nil {
 		return
 	}
-	//비밀번호 유효성
+
+	if common.SetEncrypt(signIn.Password) != memberEntity.Password {
+		err = errors.NoResultError(errors.MessageInputInvalid)
+		return
+	}
 
 	token, err = middleware.JwtAuthentication{}.GenerateJwtToken(middleware.JwtClaim{
 		ID:   memberEntity.Id,
