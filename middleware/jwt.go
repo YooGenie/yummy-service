@@ -88,7 +88,7 @@ func JWT() middleware.JWTConfig {
 	c.ContextKey = config.Config.Jwt.ContextKey
 	c.SigningKey = []byte(config.Config.Jwt.JwtSecret)
 	c.Skipper = func(c echo.Context) bool {
-		if c.Request().URL.Path == "/" || strings.Contains(c.Request().URL.Path, "/auth/") {
+		if c.Request().URL.Path == "/" || strings.Contains(c.Request().URL.Path, "/auth/") || strings.Contains(c.Request().URL.Path, "/members") {
 			return true
 		}
 		return false
@@ -101,7 +101,7 @@ func JWT() middleware.JWTConfig {
 func setSession() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			if !(c.Request().URL.Path == "/" || strings.Contains(c.Request().URL.Path, "/auth/")) {
+			if !(c.Request().URL.Path == "/" || strings.Contains(c.Request().URL.Path, "/auth/")||strings.Contains(c.Request().URL.Path, "/members")) {
 				requestID := fmt.Sprintf("%v", c.Response().Header().Get(echo.HeaderXRequestID))
 				claims := common.UserClaim{}
 				rawToken := ""
