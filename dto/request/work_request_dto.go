@@ -27,4 +27,5 @@ func (v WorkCreate) Validate(ctx echo.Context) error {
 }
 
 type SearchWorkQueryParams struct {
+	Date string `query:"date"`
 }

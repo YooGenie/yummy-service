@@ -110,6 +110,9 @@ func (workRepository) FindAll(ctx echo.Context, searchParams requestDto.SearchWo
 	queryBuilder := func() xorm.Interface {
 		q := common.GetDB(ctx).Table("works")
 		q.Where("1=1")
+		if searchParams.Date != "" {
+			q.And("date = ?", searchParams.Date)
+		}
 
 		return q
 	}
